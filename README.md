@@ -119,9 +119,9 @@ I also created a Python script to connect to the database and execute queries. T
 
 Images shown below are the output of the Python script.
 
-![p1](py-op1.png)
-![p2](py-op2.png)
-![p3](py-op3.png)
+![p1](python_outputs/py-op1.png)
+![p2](python_outputs/py-op2.png)
+![p3](python_outputs/py-op3.png)
 
 ## 2. Queries Added
 
