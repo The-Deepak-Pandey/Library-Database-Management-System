@@ -85,5 +85,68 @@ def basic_operations_menu():
         cursor.close()
         conn.close()
 
+def run_task(task_num):
+    conn = connect()
+    cursor = conn.cursor()
+    try:
+        if task_num == '1':
+            cursor.execute("""
+                INSERT INTO books(isbn, book_title, category, rental_price, status, author, publisher)
+                VALUES ('978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.')
+            """)
+            conn.commit()
+            cursor.execute("SELECT * FROM books")
+        elif task_num == '2':
+            cursor.execute("UPDATE members SET member_address = '125 Main St' WHERE member_id = 'C101'")
+            conn.commit()
+            cursor.execute("SELECT * FROM members")
+        elif task_num == '3':
+            cursor.execute("DELETE FROM issued_status WHERE issued_id = 'IS121'")
+            conn.commit()
+            cursor.execute("SELECT * FROM issued_status")
+        elif task_num == '4':
+            cursor.execute("SELECT * FROM issued_status WHERE issued_emp_id = 'E101'")
+        elif task_num == '5':
+            cursor.execute("""
+                SELECT ist.issued_emp_id, e.emp_name
+                FROM issued_status ist
+                JOIN employees e ON e.emp_id = ist.issued_emp_id
+                GROUP BY ist.issued_emp_id, e.emp_name
+                HAVING COUNT(ist.issued_id) > 1
+            """)
+        elif task_num == '6':
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS book_cnts AS
+                SELECT b.isbn, b.book_title, COUNT(ist.issued_id) as no_issued
+                FROM books b
+                JOIN issued_status ist ON ist.issued_book_isbn = b.isbn
+                GROUP BY b.isbn, b.book_title
+            """)
+            conn.commit()
+            cursor.execute("SELECT * FROM book_cnts")
+        elif task_num == '7':
+            cursor.execute("SELECT * FROM books WHERE category = 'Classic'")
+        elif task_num == '8':
+            cursor.execute("""
+                SELECT b.category, SUM(b.rental_price), COUNT(*)
+                FROM books b
+                JOIN issued_status ist ON ist.issued_book_isbn = b.isbn
+                GROUP BY b.category
+            """)
+        elif task_num == '9':
+            cursor.execute("SELECT * FROM members WHERE reg_date >= CURDATE() - INTERVAL 180 DAY")
+        else:
+            print("Invalid task number.")
+            return
+
+        rows = cursor.fetchall()
+        for row in rows:
+            print(row)
+    except Exception as e:
+        print("Error:", e)
+    finally:
+        cursor.close()
+        conn.close()
+
 if __name__ == "__main__":
     print("Database connection module ready")
