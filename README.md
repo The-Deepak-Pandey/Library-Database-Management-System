@@ -113,6 +113,16 @@ CREATE TABLE return_status
 
 ```
 
+## Python Integration
+
+I also created a Python script to connect to the database and execute queries. The script uses the `mysql-connector-python` library to interact with the MySQL database.
+
+Images shown below are the output of the Python script.
+
+![p1](py-op1.png)
+![p2](py-op2.png)
+![p3](py-op3.png)
+
 ## 2. Queries Added
 
 **Task 1. Create a New Book Record**
@@ -493,13 +503,3 @@ This project demonstrates the application of SQL skills in creating and managing
 3. **Insert the data**: Use the SQL scripts in the `insertData.sql` file to insert sample data into the tables.
 4. **Run the Queries**: Use the SQL queries in the `analysis_queries.sql` file to perform the analysis.
 5. **Explore and Modify**: Customize the queries as needed to explore different aspects of the data or answer additional questions.
-
-## Python Integration
-
-I also created a Python script to connect to the database and execute queries. The script uses the `mysql-connector-python` library to interact with the MySQL database.
-
-Images shown below are the output of the Python script.
-
-![p1](py-op1.png)
-![p2](py-op2.png)
-![p3](py-op3.png)
