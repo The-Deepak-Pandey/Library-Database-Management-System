@@ -494,3 +494,12 @@ This project demonstrates the application of SQL skills in creating and managing
 4. **Run the Queries**: Use the SQL queries in the `analysis_queries.sql` file to perform the analysis.
 5. **Explore and Modify**: Customize the queries as needed to explore different aspects of the data or answer additional questions.
 
+## Python Integration
+
+I also created a Python script to connect to the database and execute queries. The script uses the `mysql-connector-python` library to interact with the MySQL database.
+
+Images shown below are the output of the Python script.
+
+![p1](py-op1.png)
+![p2](py-op2.png)
+![p3](py-op3.png)
