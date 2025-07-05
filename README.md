@@ -115,7 +115,9 @@ CREATE TABLE return_status
 
 ## Python Integration
 
-I also created a Python script to connect to the database and execute queries. The script uses the `mysql-connector-python` library to interact with the MySQL database.
+I also created a Python script to connect to the database and execute queries which makes things easier to manage and manipulate the data. The script allows for dynamic interaction with the database, enabling users to perform various operations such as inserting new records, updating existing records, and retrieving data based on specific criteria.
+
+The script uses the `mysql-connector-python` library to interact with the MySQL database.
 
 Images shown below are the output of the Python script.
 
