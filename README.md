@@ -122,7 +122,9 @@ The script uses the `mysql-connector-python` library to interact with the MySQL 
 Images shown below are the output of the Python script.
 
 ![p1](python_outputs/py-op1.png)
+
 ![p2](python_outputs/py-op2.png)
+
 ![p3](python_outputs/py-op3.png)
 
 ## 2. Queries Added
