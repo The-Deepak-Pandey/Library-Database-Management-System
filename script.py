@@ -38,7 +38,7 @@ def print_banner():
 ██║      ██║██╔══██╗██╔══██╗██╔══██║██╔══██╗  ╚██╔╝       ██║  ██║██╔══██║   ██║   ██╔══██║██╔══██╗██╔══██║╚════██║██╔══╝     
 ███████╗██║██████╔╝██║  ██║██║  ██║██║  ██║  ██║         ██████╔╝██║  ██║   ██║   ██║  ██║██████╔╝██║  ██║███████║███████╗   
 ╚══════╝╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝  ╚═╝         ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝   
-                                                                                                                           
+                                                                                                                    
                             ███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗██████╗                            
                             ████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝██╔══██╗                           
                             ██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██████╔╝                           
@@ -349,7 +349,7 @@ def display_data_menu():
             print("--- DISPLAY DATA ---")
             print("Select data to display:")
             print("1. Display Complete Data for a Table")
-            print("2. Search Books by Title") # Moved from basic_operations_menu
+            print("2. Search Books by Title")
             print("b. Back to Main Menu")
 
             choice = input("\nEnter your choice: ").strip().lower()
@@ -383,10 +383,30 @@ def display_data_menu():
                     
                     print(f"\n--- ALL RECORDS IN '{table_name.upper()}' ---")
                     if rows:
-                        print(" | ".join(headers))
-                        print("-" * (sum(len(h) for h in headers) + (len(headers) - 1) * 3))
+                        # Calculate maximum width for each column
+                        column_widths = [len(header) for header in headers]
                         for row in rows:
-                            print(" | ".join(map(str, row)))
+                            for i, value in enumerate(row):
+                                # Convert all values to string for length calculation
+                                column_widths[i] = max(column_widths[i], len(str(value)))
+                        
+                        # Print headers
+                        header_line = " | ".join(headers[i].ljust(column_widths[i]) for i in range(len(headers)))
+                        print(header_line)
+                        print("-" * len(header_line)) # Separator line based on total header length
+
+                        # Print data rows
+                        for row in rows:
+                            # Format each value to its calculated width
+                            formatted_row = []
+                            for i, value in enumerate(row):
+                                if isinstance(value, float):
+                                    # Format floats for consistent display
+                                    formatted_value = f"{value:.2f}"
+                                else:
+                                    formatted_value = str(value)
+                                formatted_row.append(formatted_value.ljust(column_widths[i]))
+                            print(" | ".join(formatted_row))
                     else:
                         print(f"No records found in the '{table_name}' table.")
                 elif table_choice == 'b':
@@ -643,10 +663,37 @@ def run_task(task_num):
             # Attempt to print headers if available from cursor.description
             if cursor.description:
                 headers = [i[0] for i in cursor.description]
-                print(" | ".join(headers))
-                print("-" * (sum(len(h) for h in headers) + (len(headers) - 1) * 3))
-            for row in rows:
-                print(row)
+                # Calculate max width for each column dynamically
+                column_widths = [len(header) for header in headers]
+                for row in rows:
+                    for i, value in enumerate(row):
+                        # Convert all values to string for length calculation
+                        # Format floats to 2 decimal places if present
+                        if isinstance(value, float):
+                            str_value = f"{value:.2f}"
+                        elif isinstance(value, (bytes, bytearray)):
+                             str_value = value.decode('utf-8') # Decode bytes to string
+                        else:
+                            str_value = str(value)
+                        column_widths[i] = max(column_widths[i], len(str_value))
+
+                # Print headers
+                header_line = " | ".join(headers[i].ljust(column_widths[i]) for i in range(len(headers)))
+                print(header_line)
+                print("-" * len(header_line))
+
+                # Print data rows
+                for row in rows:
+                    formatted_row_data = []
+                    for i, value in enumerate(row):
+                        if isinstance(value, float):
+                            formatted_value = f"{value:.2f}"
+                        elif isinstance(value, (bytes, bytearray)):
+                            formatted_value = value.decode('utf-8')
+                        else:
+                            formatted_value = str(value)
+                        formatted_row_data.append(formatted_value.ljust(column_widths[i]))
+                    print(" | ".join(formatted_row_data))
         else:
             print("\n--- NO DATA ---")
             print("No results found for this task, or the operation completed without returning data.")
@@ -725,7 +772,7 @@ def main():
             print_banner() # Clear screen one last time
             print("\n" + "="*90) # Adjusted width for the new, wider banner
             print(f"{'Thank you for using the Library Management System!':^90}")
-            print(f"{'Have a great day!':^90}")
+            print(f"{'Have a great day!':^99}") # Adjusted for better centering on longer line
             print("="*90 + "\n")
             time.sleep(1.5) # Small delay before exiting
             break
